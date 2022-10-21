@@ -23,7 +23,6 @@ app = Flask(__name__)
 class MainPage(webapp.RequestHandler):
   def get(self):
     f = open('confusion_matrix (2).csv') # my_file.csv : same level than main.py
-    and not static
     csv = f.read()
     self.response.headers['Content-Type'] = 'text/csv'
     self.response.out.write(csv)
