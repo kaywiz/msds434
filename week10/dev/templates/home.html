@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+  <head>
+    <title> Prediction: Tip Classification </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>    
+  </head>
+  <body>
+      <div class="container">
+        <div class="row my-5 pl-3">
+            <h1>Prediction: Tip Classification</h1>
+        </div>
+        <!-- Starts form section -->
+        <div class="form-container ">
+            <form class="form-horizontal" action = "/predict/" method="post">
+                <div class="form-group row">
+                  <label class="control-label col-sm-2" for="f1">Feature #1:</label>
+                  <div class="col-sm-4">
+                    <input type="text" class="form-control" id="f1" name="f1">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="control-label col-sm-2" for="f2">Feature #2:</label>
+                  <div class="col-sm-4">          
+                    <input type="text" class="form-control" id="f2" name="f2">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="control-label col-sm-2" for="f3">Feature #3:</label>
+                  <div class="col-sm-4">
+                    <input type="text" class="form-control" id="f3" name="f3">
+                  </div>
+                </div>
+                <div class="form-group row"> 
+                <label class="control-label col-sm-2" for="">&nbsp;</label>                
+                  <div class="col-sm-offset-2 col-sm-4">
+                    <button type="submit" class="btn btn-primary">Predict</button>
+                  </div>
+                </div>
+              </form>
+            <!-- Ends form section -->
+        </div>
+    </div>
+  </body>
+</html>
