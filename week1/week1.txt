@@ -1,0 +1,56 @@
+### Introduction to Google Cloud Platform
+
+- double check free usage tier
+- don’t leave resource running
+- use github to backup
+- cloud.google.com
+- steps
+    - create My First Project (top left)
+    - compute engine sets
+    - enter name
+    - instances → create instance
+    - choose region closest to where you are, but doesn’t really matter in terms of performance within continental US
+    - select cheapest possible resources (machine type): e2-micro, 2 vCPU, 1 gb memory
+    - SSH-in-browswer
+    - shut down your instance when not in use
+        - stop
+        - delete
+    
+
+### Introduction to AWS Web Services EC2
+
+- aws.amazon.com
+- manage resources correctly
+- pick a region and stick to it
+- steps
+    - login to console
+    - search for EC2
+    - instances
+    - launch instances
+    - use ubuntu - most documented unix distribution
+    - use t2 micro
+    - ubuntu serve 22.04
+    - go back and create new key pair
+        - ec2
+        - network & security → key pair
+        - create key pair
+        - good to use same one for everything
+        - RSA
+        - ppk
+        - name - can use date and region
+        - download and save to safe place on local machine
+    - select key pair name just created
+    - launch instance
+    - grab IP address
+    - install newest version of putty
+    - instantiate putty
+        - put IP address in host name
+        - turn ssh off
+        - pull in reference to ppk
+        - connection - 30 seconds
+        - hit open
+    - when you’re done, stop then terminate instance
+        - make sure it completes and the status changes to terminated
+        
+        
+ ssh -i msds434_sept2022.pem ubuntu@18.191.57.154
