@@ -1,0 +1,39 @@
+#enable google app engine admin api
+#open console command line
+
+#activate cloud shell and print account list
+gcloud auth list
+
+#download hello world app from git
+git clone https://github.com/GoogleCloudPlatform/python-docs-samples.git
+
+#navigate to directory
+cd python-docs-samples/appengine/standard_python3/hello_world
+
+#test application
+dev_appserver.py app.yaml
+
+#preview on port 8080
+
+#open new cloud shell tab and make any edits to file
+cd python-docs-samples/appengine/standard_python3/hello_world
+nano main.py #see code snippet below
+
+#deploy to app engine
+gcloud app deploy
+
+#view application
+gcloud app browse
+
+#app.py
+from flask import Flask
+from flask import jsonify
+
+app = Flask(__name__)
+
+@app.route('/')
+def hello():
+	return jsonify('hello world')
+
+if __name__ == '__main__':
+	app.run(host='127.0.0.1', port=8080, debug=True)
