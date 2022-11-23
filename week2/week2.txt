@@ -1,0 +1,57 @@
+#install git
+sudo apt update
+sudo apt install git
+
+###GCP
+- compute engine
+    - create an instance (see week 1 notes)
+    - connect via ssh
+
+#go to git and start a repo from scratch and grab url
+
+#clone repo
+git clone https://github.com/kaywiz/msds434.git
+
+#reinitialize repo
+git init
+
+#establish main branch
+git branch -M main
+
+#set up git to push remotely
+#github console -> settings -> developer settings -> personal access tokens -> generate
+#click-check repo -> generate token
+#whenever it asks for passwork, it's asking for personal access token
+git remote remove origin
+git remote add origin https://kaywiz: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@github.com/kaywiz/msds434.git
+
+#edit README
+cd msds434
+nano README.md
+[edit]
+[ctrl+O]
+[enter]
+[ctrl+X]
+
+#push
+git push -u origin main
+kaywiz
+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
+
+#commit when you have files/changes to commit
+git add README.md
+git commit -m "updated readme"
+git push -u origin main
+
+
+###AWS
+- get instance running
+- open putty session / ssh
+- git is already installed in putty?
+
+ssh -i msds434_sept2022.pem ubuntu@18.222.174.240
+
+#clone repo
+git clone https://github.com/kaywiz/msds434.git
+
+#do the rest as above
