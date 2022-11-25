@@ -16,6 +16,7 @@
 # [START gae_python3_app]
 from flask import Flask
 import requests
+import json
 
 # If `entrypoint` is not defined in app.yaml, App Engine will look for an app
 # called `app` in `main.py`.
@@ -26,7 +27,8 @@ def hello():
     payload={"instances":[{"fare": 17.75,"extras": 1.0,"trip_total": 7.45,"payment_type": "Cash"}]}
     url='https://us-central1-ml.googleapis.com/v1/projects/msds434-final/models/TIP_MODEL/versions/v1:predict?access_token=ya29.a0AeTM1ieUF8zyGiBDOHZcOsEyuPP1aiwZmGGC_LgGQYdAidGlJBCzyxRi6rHMIxCtbLInTTOnvZ8MySZBzQFQ-umhtgRlGVdFM0YUGQ_RnZDL_dTEpG3qCkgVBYpejAAe3ZpjWrejrMmUPwqBJ3olFpm1iJtd8AaCgYKAWQSARASFQHWtWOmGNnhuzbY5G09ill587oPTA0165'
     r = requests.post(url, json=payload)
-    return r.text
+    m = "Payload: "+payload+"/n"+r.text
+    return m
 
 
 if __name__ == '__main__':
