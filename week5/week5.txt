@@ -1,0 +1,121 @@
+#http://amygdala.github.io/automl/ml/2019/05/06/automl-tables.html
+
+#create dataset in BigQuery with US region
+
+#run query -- takes about 2 mins
+CREATE OR REPLACE TABLE `sample_v2.chicago_taxitrips_mod` AS (
+WITH
+  taxitrips AS (
+  SELECT
+    trip_start_timestamp,
+    trip_end_timestamp,
+    trip_seconds,
+    trip_miles,
+    pickup_census_tract,
+    dropoff_census_tract,
+    pickup_community_area,
+    dropoff_community_area,
+    fare,
+    tolls,
+    extras,
+    trip_total,
+    payment_type,
+    company,
+    pickup_longitude,
+    pickup_latitude,
+    dropoff_longitude,
+    dropoff_latitude,
+    IF((tips/fare >= 0.2),
+      1,
+      0) AS tip_bin
+  FROM
+    `bigquery-public-data.chicago_taxi_trips.taxi_trips`
+  WHERE
+    trip_miles > 0
+    AND fare > 0)
+SELECT
+  trip_start_timestamp,
+  trip_end_timestamp,
+  trip_seconds,
+  trip_miles,
+  pickup_census_tract,
+  dropoff_census_tract,
+  pickup_community_area,
+  dropoff_community_area,
+  fare,
+  tolls,
+  extras,
+  trip_total,
+  payment_type,
+  company,
+  tip_bin,
+  ST_AsText(ST_SnapToGrid(ST_GeogPoint(pickup_longitude,
+        pickup_latitude), 0.1)) AS pickup_grid,
+  ST_AsText(ST_SnapToGrid(ST_GeogPoint(dropoff_longitude,
+        dropoff_latitude), 0.1)) AS dropoff_grid,
+  ST_Distance(ST_GeogPoint(pickup_longitude,
+      pickup_latitude),
+    ST_GeogPoint(dropoff_longitude,
+      dropoff_latitude)) AS euclidean,
+  CONCAT(ST_AsText(ST_SnapToGrid(ST_GeogPoint(pickup_longitude,
+          pickup_latitude), 0.1)), ST_AsText(ST_SnapToGrid(ST_GeogPoint(dropoff_longitude,
+          dropoff_latitude), 0.1))) AS loc_cross
+FROM
+  taxitrips
+LIMIT
+  100000000
+  )
+
+#create model -- takes ~7 mins
+CREATE OR REPLACE MODEL `sample_v2.chicago_taxitrips_mod4`
+OPTIONS(MODEL_TYPE='logistic_reg',
+        labels=['tip_bin'],
+        auto_class_weights=TRUE)
+AS
+SELECT * EXCEPT (tolls, trip_start_timestamp, trip_end_timestamp)
+FROM `sample_v2.chicago_taxitrips_mod`
+
+#enable compute engine API
+#create VM instance, set correct permissions for each API
+#SSH in
+
+#install git
+sudo apt update
+sudo apt install git
+
+#go to git and start a repo from scratch and grab url
+
+#clone repo
+git clone https://github.com/kaywiz/msds434.git
+
+cd msds434/week5
+
+#create cloud storage bucket
+
+#extract model
+bq extract -m sample_v2.chicago_taxitrips_mod4 gs://week5_v2/model_v2
+
+#create model on ai platform
+
+#test with json input
+{
+	"instances": [{
+		"trip_seconds": 1610,
+		"trip_miles": 14.09,
+		"pickup_census_tract": 17031980100,
+		"dropoff_census_tract": 17031081202,
+		"pickup_community_area": 56,
+		"dropoff_community_area": 8,
+		"fare": 37.25,
+		"extras": 4.0,
+		"trip_total": 50.1,
+		"payment_type": "Credit Card",
+		"company": "Chicago Carriage Cab Corp",
+		"pickup_grid": "POINT(-87.8 41.8)",
+		"dropoff_grid": "POINT(-87.6 41.9)",
+		"euclidean": 16598.196073884614,
+		"loc_cross": "POINT(-87.8 41.8)POINT(-87.6 41.9)"
+	}]
+}
+
+
