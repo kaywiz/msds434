@@ -24,7 +24,7 @@ app = Flask(__name__)
 @app.route('/')
 def hello():
     payload={"instances":[{"fare": 17.75,"extras": 1.0,"trip_total": 7.45,"payment_type": "Cash"}]}
-    url='https://us-central1-ml.googleapis.com/v1/projects/msds434-final/models/TIP_MODEL/versions/v1:predict?access_token=ya29.a0AeTM1ieUF8zyGiBDOHZcOsEyuPP1aiwZmGGC_LgGQYdAidGlJBCzyxRi6rHMIxCtbLInTTOnvZ8MySZBzQFQ-umhtgRlGVdFM0YUGQ_RnZDL_dTEpG3qCkgVBYpejAAe3ZpjWrejrMmUPwqBJ3olFpm1iJtd8AaCgYKAWQSARASFQHWtWOmGNnhuzbY5G09ill587oPTA0165'
+    url='https://us-central1-ml.googleapis.com/v1/projects/msds434-final/models/TIP_MODEL/versions/v1:predict?access_token=ya29.a0AeTM1ifA1TFePbGosDju0Tlr5C73zCGsluZ4yQw_rIFl3ww6ZO5NG_BNBNNdXUxwPxSWT8tipYTyxPexthqdwgjX4pzxk-jRELvG8zBQZ-tKzMn0aaALknjt44zwPsqTtlINunnRSycAjH-T1QBkSTXF6TZs0waCgYKAbgSARASFQHWtWOmzK4zIKZq0p9xCyiqJSMNkQ0165'
     r = requests.post(url, json=payload)
     m = "Request: "+str(payload)+"\n\n"+"Response: "+str(r.text)
     return m
