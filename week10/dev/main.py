@@ -15,6 +15,7 @@
 # [START gae_python38_app]
 # [START gae_python3_app]
 from flask import Flask
+import requests
 
 # If `entrypoint` is not defined in app.yaml, App Engine will look for an app
 # called `app` in `main.py`.
@@ -22,8 +23,8 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello():
-    """Return a friendly HTTP greeting."""
-    return 'Hello World!'
+    r = requests.get('https://api.github.com/events')
+    return r.text
 
 
 if __name__ == '__main__':
