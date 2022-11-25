@@ -23,8 +23,8 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello():
-    r = requests.get('https://api.github.com/events')
-    return r.text
+    r = requests.post('https://httpbin.org/post', data={'key': 'value'})
+    return "hello"
 
 
 if __name__ == '__main__':
