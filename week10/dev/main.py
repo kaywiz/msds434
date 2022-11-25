@@ -24,7 +24,7 @@ app = Flask(__name__)
 @app.route('/')
 def hello():
     r = requests.post('https://httpbin.org/post', data={'key': 'value'})
-    return "hello"
+    return r.text
 
 
 if __name__ == '__main__':
