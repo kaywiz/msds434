@@ -1,29 +1,68 @@
-# importing the requests library
-import requests
+# Copyright 2016 Google Inc. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
-# defining the api-endpoint
-API_ENDPOINT = "http://pastebin.com/api/api_post.php"
+"""
+Sample application that demonstrates different ways of fetching
+URLS on App Engine
+"""
 
-# your API key here
-API_KEY = "XXXXXXXXXXXXXXXXX"
+import logging
+import urllib
 
-# your source code here
-source_code = '''
-print("Hello, world!")
-a = 1
-b = 2
-print(a + b)
-'''
+# [START urllib2-imports]
+import urllib2
+# [END urllib2-imports]
 
-# data to be sent to api
-data = {'api_dev_key':API_KEY,
-		'api_option':'paste',
-		'api_paste_code':source_code,
-		'api_paste_format':'python'}
+# [START urlfetch-imports]
+from google.appengine.api import urlfetch
+# [END urlfetch-imports]
+import webapp2
 
-# sending post request and saving response as response object
-r = requests.post(url = API_ENDPOINT, data = data)
 
-# extracting response text
-pastebin_url = r.text
-print("The pastebin URL is:%s"%pastebin_url)
+
+class UrlPostHandler(webapp2.RequestHandler):
+    """ Demonstrates an HTTP POST form query using urlfetch"""
+
+    form_fields = {
+        'first_name': 'Albert',
+        'last_name': 'Johnson',
+    }
+
+    def get(self):
+        # [START urlfetch-post]
+        try:
+            form_data = urllib.urlencode(UrlPostHandler.form_fields)
+            headers = {'Content-Type': 'application/x-www-form-urlencoded'}
+            result = urlfetch.fetch(
+                url='http://localhost:8080/submit_form',
+                payload=form_data,
+                method=urlfetch.POST,
+                headers=headers)
+            self.response.write(result.content)
+        except urlfetch.Error:
+            logging.exception('Caught exception fetching url')
+        # [END urlfetch-post]
+
+
+class SubmitHandler(webapp2.RequestHandler):
+    """ Handler that receives UrlPostHandler POST request"""
+
+    def post(self):
+        self.response.out.write((self.request.get('first_name')))
+
+
+app = webapp2.WSGIApplication([
+    ('/url_post', UrlPostHandler),
+    ('/submit_form', SubmitHandler)
+], debug=True)
