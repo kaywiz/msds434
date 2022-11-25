@@ -20,14 +20,11 @@ from flask import Flask
 import requests
 
 app = Flask(__name__)
-
-
+    
 @app.route('/')
-class MainPage(webapp.RequestHandler):
-  def get(self):
+def app_final():
     r = requests.get('https://api.github.com/events')
-    self.response.headers['Content-Type'] = 'text/plain'
-    self.response.out.write(r.text)
+    return r.text
 
 
 if __name__ == '__main__':
