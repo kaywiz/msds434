@@ -25,9 +25,8 @@ app = Flask(__name__)
 @app.route('/')
 class MainPage(webapp.RequestHandler):
   def get(self):
-    payload = {'key1': 'value1', 'key2': 'value2'}
-    r = requests.post("https://httpbin.org/post", data=payload)
-    #self.response.headers['Content-Type'] = 'json'
+    r = requests.get('https://api.github.com/events')
+    self.response.headers['Content-Type'] = 'text/plain'
     self.response.out.write(r.text)
 
 
