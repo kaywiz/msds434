@@ -1,0 +1,60 @@
+#V1
+
+#https://cloud.google.com/appengine/docs/standard/python3/building-app/creating-gcp-project
+
+#create VM instance and ssh in
+
+#install pip and python and git
+sudo apt update
+sudo apt install python3-pip
+sudo apt intall git
+
+#clone repo
+git clone https://github.com/kaywiz/msds434.git
+cd msds434/week7
+
+#follow instructions https://cloud.google.com/appengine/docs/standard/python3/building-app/writing-web-service
+
+#setup git to push remotely
+git remote add origin https://kaywiz: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@github.com/kaywiz/msds434.git
+
+#commit and push
+git add --all
+git commit -m "local app sample files"
+git config --global user.email "iamkelly8@gmail.com"
+git config --global user.name "kaywiz"
+git push -u origin main
+
+
+
+#V2
+
+#install python in cloud shell
+#https://stackoverflow.com/questions/53468831/how-do-i-install-python-in-google-cloud-shell
+
+#https://notebook.community/GoogleCloudPlatform/python-docs-samples/tables/automl/notebooks/census_income_prediction/getting_started_notebook
+
+
+
+
+#V3 (see below)
+#https://shell.cloud.google.com/?show=ide%2Cterminal&walkthrough_id=deploy--cloud-deploy-e2e-run
+
+
+
+
+
+#call test
+gcurl $(gcloud run services \
+    describe hello-app-test \
+    --format='value(status.url)')
+
+#call staging
+gcurl $(gcloud run services \
+    describe hello-app-staging \
+    --format='value(status.url)')
+
+#call prod
+gcurl $(gcloud run services \
+    describe hello-app-prod \
+    --format='value(status.url)')
