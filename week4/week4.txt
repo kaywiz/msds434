@@ -1,0 +1,44 @@
+#create vm instance
+#make sure to configure sources -> by each API -> storage is "Read write"
+
+#create bigquery dataset
+#create cloud bucket
+
+#https://cloud.google.com/dataflow/docs/guides/data-pipelines
+#create a batch pipeline
+
+#ssh into vm instance
+
+#install git
+sudo apt update
+sudo apt install git
+
+#go to git and start a repo from scratch and grab url
+
+#clone repo
+git clone https://github.com/kaywiz/msds434.git
+
+#reinitialize repo
+git init
+
+#establish main branch
+git branch -M main
+
+#set up git to push remotely
+#github console -> settings -> developer settings -> personal access tokens -> generate
+#click-check repo -> generate token
+#whenever it asks for passwork, it's asking for personal access token
+git remote remove origin
+git remote add origin https://kaywiz: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@github.com/kaywiz/msds434.git
+
+#navigate to files
+cd msds434
+
+#https://gist.github.com/ryderdamen/926518ddddd46dd4c8c2e4ef5167243d
+
+#copy files into cloud storage bucket
+gsutil cp bq_three_column_table.json gs://msds434_week4_v1/text_to_bigquery/
+gsutil cp split_csv_3cols.js gs://msds434_week4_v1/text_to_bigquery/
+gsutil cp file01.csv gs://msds434_week4_v1/inputs/
+
+#create tmp folder in bucket using console
