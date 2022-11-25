@@ -1,0 +1,68 @@
+#create table to bigquery
+CREATE OR REPLACE TABLE `week6_v1.chicago_taxitrips_mod` AS (
+WITH
+  taxitrips AS (
+  SELECT
+    trip_start_timestamp,
+    trip_end_timestamp,
+    trip_seconds,
+    trip_miles,
+    pickup_census_tract,
+    dropoff_census_tract,
+    pickup_community_area,
+    dropoff_community_area,
+    fare,
+    tolls,
+    extras,
+    trip_total,
+    payment_type,
+    company,
+    pickup_longitude,
+    pickup_latitude,
+    dropoff_longitude,
+    dropoff_latitude,
+    IF((tips/fare >= 0.2),
+      1,
+      0) AS tip_bin
+  FROM
+    `bigquery-public-data.chicago_taxi_trips.taxi_trips`
+  WHERE
+    trip_miles > 0
+    AND fare > 0)
+SELECT
+  trip_start_timestamp,
+  trip_end_timestamp,
+  trip_seconds,
+  trip_miles,
+  pickup_census_tract,
+  dropoff_census_tract,
+  pickup_community_area,
+  CAST (dropoff_community_area AS STRING) AS dropoff_community_area,
+  fare,
+  tolls,
+  extras,
+  trip_total,
+  payment_type,
+  company,
+  tip_bin,
+  ST_AsText(ST_SnapToGrid(ST_GeogPoint(pickup_longitude,
+        pickup_latitude), 0.1)) AS pickup_grid,
+  ST_AsText(ST_SnapToGrid(ST_GeogPoint(dropoff_longitude,
+        dropoff_latitude), 0.1)) AS dropoff_grid,
+  ST_Distance(ST_GeogPoint(pickup_longitude,
+      pickup_latitude),
+    ST_GeogPoint(dropoff_longitude,
+      dropoff_latitude)) AS euclidean,
+  CONCAT(ST_AsText(ST_SnapToGrid(ST_GeogPoint(pickup_longitude,
+          pickup_latitude), 0.1)), ST_AsText(ST_SnapToGrid(ST_GeogPoint(dropoff_longitude,
+          dropoff_latitude), 0.1))) AS loc_cross
+FROM
+  taxitrips
+LIMIT
+  100000000
+  )
+
+#import bigquery table as dataset in automl
+#https://console.cloud.google.com/automl-tables/datasets?authuser=1&project=msds434-366601
+
+#train on payment_type
