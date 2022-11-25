@@ -1,0 +1,5 @@
+#https://www.cloudskillsboost.google/focuses/10599?parent=catalog
+
+#https://www.datadoghq.com/blog/apachebench/
+
+#https://aws.plainenglish.io/apachebench-how-to-load-test-and-benchmark-your-server-229456588903
